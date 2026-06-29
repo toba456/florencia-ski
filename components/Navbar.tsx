@@ -38,7 +38,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-xs tracking-widest uppercase text-brand-subtext hover:text-white transition-colors"
+              className="text-sm tracking-widest uppercase text-white/80 hover:text-white transition-colors"
               style={{ fontFamily: 'var(--font-barlow)', fontWeight: 600 }}
             >
               {link.label}
@@ -50,7 +50,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <a
             href="#booking"
-            className="px-5 py-2 border border-brand-ice text-brand-ice text-xs tracking-widest uppercase font-semibold hover:bg-brand-ice hover:text-brand-dark transition-all duration-200"
+            className="px-6 py-2.5 border border-brand-ice text-brand-ice text-sm tracking-widest uppercase font-semibold hover:bg-brand-ice hover:text-brand-dark transition-all duration-200"
             style={{ fontFamily: 'var(--font-barlow)', fontWeight: 700 }}
           >
             {t('book')}

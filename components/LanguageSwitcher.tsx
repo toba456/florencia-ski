@@ -21,24 +21,20 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-1">
-      {languages.map((lang, i) => (
-        <span key={lang.code} className="flex items-center gap-1">
-          <button
-            onClick={() => switchLocale(lang.code)}
-            className={`text-xs tracking-widest font-medium transition-colors ${
-              locale === lang.code
-                ? 'text-brand-ice'
-                : 'text-brand-subtext hover:text-white'
-            }`}
-            style={{ fontFamily: 'var(--font-barlow)' }}
-          >
-            {lang.label}
-          </button>
-          {i < languages.length - 1 && (
-            <span className="text-brand-border text-xs">·</span>
-          )}
-        </span>
+    <div className="flex items-center border border-white/20 rounded-sm overflow-hidden">
+      {languages.map((lang) => (
+        <button
+          key={lang.code}
+          onClick={() => switchLocale(lang.code)}
+          className={`px-2.5 py-1 text-sm tracking-widest font-semibold transition-colors ${
+            locale === lang.code
+              ? 'bg-brand-ice text-brand-dark'
+              : 'text-white/70 hover:text-white hover:bg-white/10'
+          }`}
+          style={{ fontFamily: 'var(--font-barlow)' }}
+        >
+          {lang.label}
+        </button>
       ))}
     </div>
   );
