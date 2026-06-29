@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Florencia Segovia — Ski Instructor Website
+
+Professional website for Florencia Segovia, certified ski instructor based in Japan (Hakuba · Myoko · Shiga Kogen). Built with Next.js 16, Supabase, and Tailwind CSS v4.
+
+## Features
+
+- **Multilingual** — English, Spanish and Thai (next-intl)
+- **Booking calendar** — clients see real-time availability and submit lesson requests
+- **Admin dashboard** — Florencia manages available days and reviews/confirms bookings
+- **Framer Motion** animations throughout
+- **Fully responsive** — mobile-first design
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Styling | Tailwind CSS v4 |
+| Database & Auth | Supabase (PostgreSQL + Row Level Security) |
+| i18n | next-intl 4 |
+| Calendar | react-day-picker v9 |
+| Animations | Framer Motion |
+| Fonts | Barlow Condensed + Inter (Google Fonts) |
+| Deployment | Vercel |
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/florencia-ski.git
+cd florencia-ski
+npm install
+```
+
+### 2. Set up Supabase
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the contents of `supabase-schema.sql`
+3. Go to **Authentication → Users** and create a user with the admin email
+
+### 3. Configure environment variables
+
+```bash
+cp .env.local.example .env.local
+```
+
+Fill in `.env.local` with your Supabase credentials:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+florencia-ski/
+├── app/
+│   ├── [locale]/           # Localized pages (en/es/th)
+│   │   ├── page.tsx        # Homepage
+│   │   ├── layout.tsx      # Locale layout (fonts, i18n provider)
+│   │   └── admin/
+│   │       ├── login/      # Admin login page
+│   │       └── dashboard/  # Availability & bookings management
+│   ├── api/
+│   │   ├── availability/   # GET available slots
+│   │   └── bookings/       # POST booking requests
+│   └── globals.css         # Tailwind v4 theme tokens
+├── components/
+│   ├── sections/           # Homepage sections
+│   └── booking/            # Calendar + booking form
+├── i18n/                   # next-intl config & routing
+├── lib/                    # Supabase client & TypeScript types
+├── messages/               # Translation files (en/es/th)
+├── public/                 # Images
+├── supabase-schema.sql     # Database schema + RLS policies
+└── proxy.ts                # next-intl middleware
+```
 
-## Learn More
+## Admin Panel
 
-To learn more about Next.js, take a look at the following resources:
+Access the admin panel at `/en/admin/login` (or `/es/admin/login`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Availability tab** — select days on the calendar, set start/end time, save to Supabase. Saved slots immediately appear on the public booking calendar.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Bookings tab** — view all client requests with name, email, phone, service type, and selected slot. Confirm or cancel each request. Confirming marks the slot as booked and removes it from the public calendar.
 
-## Deploy on Vercel
+## Database Schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sql
+availability_slots   -- dates + time ranges Florencia is available
+booking_requests     -- client submissions (pending → confirmed/cancelled)
+reviews              -- admin-curated testimonials (optional)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Row Level Security ensures:
+- Anyone can read available slots and approved reviews
+- Anyone can submit a booking request
+- Only authenticated admin can manage availability and bookings
+
+## Season
+
+December – February · 09:00–16:00 · Minimum 3 hours
+
+## Contact
+
+- Email: Floriseg@proton.me
+- WhatsApp: +54 261 610 3962
+- Locations: Hakuba · Myoko · Shiga Kogen, Japan
