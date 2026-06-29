@@ -104,12 +104,14 @@ export default function AdminDashboardPage() {
   }
 
   async function updateBookingStatus(id: string, status: 'confirmed' | 'cancelled') {
+    const booking = bookings.find((b) => b.id === id);
     await supabase.from('booking_requests').update({ status }).eq('id', id);
-    // If confirming, mark the slot as booked
-    if (status === 'confirmed') {
-      const booking = bookings.find((b) => b.id === id);
-      if (booking) {
+    if (booking) {
+      const wasConfirmed = booking.status === 'confirmed';
+      if (status === 'confirmed') {
         await supabase.from('availability_slots').update({ is_booked: true }).eq('id', booking.slot_id);
+      } else if (status === 'cancelled' && wasConfirmed) {
+        await supabase.from('availability_slots').update({ is_booked: false }).eq('id', booking.slot_id);
       }
     }
     await fetchBookings();
@@ -340,21 +342,23 @@ export default function AdminDashboardPage() {
                         )}
                       </div>
 
-                      {booking.status === 'pending' && (
+                      {booking.status !== 'cancelled' && (
                         <div className="flex gap-2 shrink-0">
-                          <button
-                            onClick={() => updateBookingStatus(booking.id, 'confirmed')}
-                            className="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-400 text-xs tracking-widest uppercase font-semibold hover:bg-green-500/20 transition-colors"
-                            style={{ fontFamily: 'var(--font-barlow)' }}
-                          >
-                            Confirm
-                          </button>
+                          {booking.status === 'pending' && (
+                            <button
+                              onClick={() => updateBookingStatus(booking.id, 'confirmed')}
+                              className="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-400 text-xs tracking-widest uppercase font-semibold hover:bg-green-500/20 transition-colors"
+                              style={{ fontFamily: 'var(--font-barlow)' }}
+                            >
+                              Confirm
+                            </button>
+                          )}
                           <button
                             onClick={() => updateBookingStatus(booking.id, 'cancelled')}
                             className="px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-xs tracking-widest uppercase font-semibold hover:bg-red-500/20 transition-colors"
                             style={{ fontFamily: 'var(--font-barlow)' }}
                           >
-                            Cancel
+                            {booking.status === 'confirmed' ? 'Cancel & Reopen' : 'Cancel'}
                           </button>
                         </div>
                       )}
