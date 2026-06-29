@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "about": "About",
+    "method": "My Method",
+    "services": "Services",
+    "book": "Book Now"
+  },
+  "hero": {
+    "title": "From First Turns to Off-Piste",
+    "subtitle": "One Standard: Safety",
+    "location": "Ski Instructor in Japan",
+    "cta": "How I Work"
+  },
+  "about": {
+    "sectionLabel": "Who You Ski With",
+    "title": "Florencia Segovia",
+    "credentials": "Argentinian Ski Instructor · Lawyer · WFR Certified · Skydiver & Climber",
+    "tagline": "Passion. Professionalism. Safety.",
+    "bio": "Off the snow, I'm a lawyer, skydiver, and climber. They're not separate worlds to me — in all of them, I read risk, stay calm, and help you progress. My method comes from that mix of discipline and passion.",
+    "cta": "My Method"
+  },
+  "method": {
+    "sectionLabel": "Earning Your Trust",
+    "title": "My Method",
+    "items": {
+      "offPiste": {
+        "title": "Off-Piste",
+        "text": "Terrain, snowpack, and weather read before every run. WFR and lawyer's mindset for every descent."
+      },
+      "kids": {
+        "title": "Kids",
+        "text": "Real skills via games. Confidence first, risk never. Every child progresses at their own pace."
+      },
+      "safety": {
+        "title": "Always a Plan",
+        "text": "You'll always know the plan. Clear, shared safety logic — no surprises on the mountain."
+      },
+      "approach": {
+        "title": "Patient & Technical",
+        "text": "Patient, technical, serene. No shouting. Just progression, step by step."
+      }
+    },
+    "cta": "See Services"
+  },
+  "services": {
+    "sectionLabel": "What I Offer",
+    "title": "Services",
+    "items": {
+      "private": {
+        "title": "Private Lesson",
+        "description": "One-on-one instruction fully tailored to your level and goals. The most effective way to progress."
+      },
+      "kids": {
+        "title": "Kids Lesson",
+        "description": "Fun, safe progression for children of all ages. Skills built through games and gentle challenges."
+      },
+      "offPiste": {
+        "title": "Off-Piste & Backcountry",
+        "description": "Expert guidance in untracked snow with full risk assessment before every run."
+      },
+      "group": {
+        "title": "Group Lesson",
+        "description": "Small groups, personalized attention, shared energy. Learn together, progress together."
+      }
+    },
+    "duration": "Duration",
+    "halfDay": "Half Day (3h min.)",
+    "fullDay": "Full Day",
+    "language": "Taught in",
+    "languages": "English · Spanish",
+    "price": "Price",
+    "priceValue": "Contact for pricing",
+    "inquire": "Book a Lesson"
+  },
+  "booking": {
+    "sectionLabel": "Book a Lesson",
+    "title": "Check Availability",
+    "subtitle": "Select a date to see available time slots. Season runs December through February.",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "noSlots": "No availability on this date. Try another day.",
+    "selectDate": "Select a date",
+    "selectSlot": "Select a time slot",
+    "selectedSlot": "Selected:",
+    "form": {
+      "title": "Your Details",
+      "name": "Full Name",
+      "namePlaceholder": "Your full name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phone": "Phone / WhatsApp",
+      "phonePlaceholder": "+1 234 567 890",
+      "service": "Service Type",
+      "servicePlaceholder": "Choose a service",
+      "serviceOptions": {
+        "private": "Private Lesson",
+        "kids": "Kids Lesson",
+        "offPiste": "Off-Piste / Backcountry",
+        "group": "Group Lesson"
+      },
+      "duration": "Duration",
+      "durationPlaceholder": "Choose duration",
+      "durationOptions": {
+        "3h": "3 hours",
+        "4h": "4 hours",
+        "halfDay": "Half Day",
+        "fullDay": "Full Day"
+      },
+      "message": "Message (optional)",
+      "messagePlaceholder": "Any questions, your level, number of people...",
+      "submit": "Send Booking Request",
+      "submitting": "Sending...",
+      "success": "Request sent! Florencia will contact you within 24 hours.",
+      "error": "Something went wrong. Please try again or contact via WhatsApp."
+    }
+  },
+  "reviews": {
+    "sectionLabel": "Client Reviews",
+    "title": "Real Trust, Earned One Lesson at a Time",
+    "empty": "Reviews coming soon."
+  },
+  "footer": {
+    "tagline": "One Standard: Safety.",
+    "location": "Hakuba · Myoko · Shiga Kogen, Japan",
+    "contact": "Contact",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "rights": "All rights reserved.",
+    "madeWith": "Built with care"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "about": "Sobre Mí",
+    "method": "Mi Método",
+    "services": "Servicios",
+    "book": "Reservar"
+  },
+  "hero": {
+    "title": "De los Primeros Giros al Fuera de Pista",
+    "subtitle": "Un Solo Estándar: Seguridad",
+    "location": "Instructora de Esquí en Japón",
+    "cta": "Cómo Trabajo"
+  },
+  "about": {
+    "sectionLabel": "Con Quién Esquiás",
+    "title": "Florencia Segovia",
+    "credentials": "Instructora Argentina · Abogada · Certificada WFR · Paracaidista y Escaladora",
+    "tagline": "Pasión. Profesionalismo. Seguridad.",
+    "bio": "Fuera de la nieve soy abogada, paracaidista y escaladora. Para mí no son mundos separados — en todos leo el riesgo, mantengo la calma y ayudo a progresar. Mi método viene de esa mezcla de disciplina y pasión.",
+    "cta": "Mi Método"
+  },
+  "method": {
+    "sectionLabel": "Ganando Tu Confianza",
+    "title": "Mi Método",
+    "items": {
+      "offPiste": {
+        "title": "Fuera de Pista",
+        "text": "Terreno, nieve y clima evaluados antes de cada bajada. Mentalidad WFR y de abogada en cada descenso."
+      },
+      "kids": {
+        "title": "Niños",
+        "text": "Habilidades reales a través de juegos. Confianza primero, riesgo nunca. Cada niño progresa a su ritmo."
+      },
+      "safety": {
+        "title": "Siempre un Plan",
+        "text": "Siempre sabrás el plan. Lógica de seguridad clara y compartida — sin sorpresas en la montaña."
+      },
+      "approach": {
+        "title": "Paciente y Técnica",
+        "text": "Paciente, técnica, serena. Sin gritos. Solo progresión, paso a paso."
+      }
+    },
+    "cta": "Ver Servicios"
+  },
+  "services": {
+    "sectionLabel": "Lo Que Ofrezco",
+    "title": "Servicios",
+    "items": {
+      "private": {
+        "title": "Clase Privada",
+        "description": "Instrucción uno a uno completamente adaptada a tu nivel y objetivos. La forma más efectiva de progresar."
+      },
+      "kids": {
+        "title": "Clase para Niños",
+        "description": "Progresión divertida y segura para niños de todas las edades. Habilidades construidas con juegos y desafíos suaves."
+      },
+      "offPiste": {
+        "title": "Fuera de Pista y Backcountry",
+        "description": "Guía experta en nieve virgen con evaluación completa de riesgos antes de cada bajada."
+      },
+      "group": {
+        "title": "Clase Grupal",
+        "description": "Grupos pequeños, atención personalizada, energía compartida. Aprendé juntos, progresen juntos."
+      }
+    },
+    "duration": "Duración",
+    "halfDay": "Medio Día (mín. 3h)",
+    "fullDay": "Día Completo",
+    "language": "Idioma de instrucción",
+    "languages": "Inglés · Español",
+    "price": "Precio",
+    "priceValue": "Consultar precio",
+    "inquire": "Reservar una Clase"
+  },
+  "booking": {
+    "sectionLabel": "Reservar una Clase",
+    "title": "Ver Disponibilidad",
+    "subtitle": "Seleccioná una fecha para ver los horarios disponibles. Temporada de diciembre a febrero.",
+    "available": "Disponible",
+    "unavailable": "No disponible",
+    "noSlots": "Sin disponibilidad en esta fecha. Probá otro día.",
+    "selectDate": "Seleccioná una fecha",
+    "selectSlot": "Elegí un horario",
+    "selectedSlot": "Seleccionado:",
+    "form": {
+      "title": "Tus Datos",
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre completo",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "phone": "Teléfono / WhatsApp",
+      "phonePlaceholder": "+54 261 610 3962",
+      "service": "Tipo de servicio",
+      "servicePlaceholder": "Elegí un servicio",
+      "serviceOptions": {
+        "private": "Clase Privada",
+        "kids": "Clase para Niños",
+        "offPiste": "Fuera de Pista / Backcountry",
+        "group": "Clase Grupal"
+      },
+      "duration": "Duración",
+      "durationPlaceholder": "Elegí la duración",
+      "durationOptions": {
+        "3h": "3 horas",
+        "4h": "4 horas",
+        "halfDay": "Medio Día",
+        "fullDay": "Día Completo"
+      },
+      "message": "Mensaje (opcional)",
+      "messagePlaceholder": "Preguntas, tu nivel, cantidad de personas...",
+      "submit": "Enviar Solicitud de Reserva",
+      "submitting": "Enviando...",
+      "success": "¡Solicitud enviada! Florencia se contactará en menos de 24 horas.",
+      "error": "Algo salió mal. Por favor intentá de nuevo o contactá por WhatsApp."
+    }
+  },
+  "reviews": {
+    "sectionLabel": "Reseñas de Clientes",
+    "title": "Confianza Real, Ganada Clase a Clase",
+    "empty": "Reseñas próximamente."
+  },
+  "footer": {
+    "tagline": "Un Solo Estándar: Seguridad.",
+    "location": "Hakuba · Myoko · Shiga Kogen, Japón",
+    "contact": "Contacto",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "rights": "Todos los derechos reservados.",
+    "madeWith": "Hecho con cuidado"
+  }
+}
