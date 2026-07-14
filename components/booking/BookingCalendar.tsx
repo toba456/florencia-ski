@@ -104,6 +104,7 @@ export default function BookingCalendar({ onSlotSelect }: Props) {
               nav: 'flex gap-2',
               button_previous: 'text-brand-subtext hover:text-white transition-colors p-1',
               button_next: 'text-brand-subtext hover:text-white transition-colors p-1',
+              chevron: 'fill-brand-ice',
               weeks: 'w-full',
               weekdays: 'grid grid-cols-7 mb-2',
               weekday: 'text-brand-subtext text-xs text-center py-2 tracking-widest uppercase',

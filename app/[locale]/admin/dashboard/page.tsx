@@ -248,6 +248,7 @@ export default function AdminDashboardPage() {
                   nav: 'flex gap-2',
                   button_previous: 'text-brand-subtext hover:text-white p-1',
                   button_next: 'text-brand-subtext hover:text-white p-1',
+                  chevron: 'fill-brand-ice',
                   weekday: 'text-brand-subtext text-xs text-center py-2',
                   day_button: 'w-full h-full flex items-center justify-center text-sm rounded-none text-white disabled:opacity-25',
                   selected: '!bg-brand-ice !text-brand-dark font-bold',
