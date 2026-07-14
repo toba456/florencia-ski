@@ -3,6 +3,7 @@
     "about": "About",
     "method": "My Method",
     "services": "Services",
+    "reviews": "Reviews",
     "book": "Book Now"
   },
   "hero": {
@@ -117,7 +118,23 @@
   "reviews": {
     "sectionLabel": "Client Reviews",
     "title": "Real Trust, Earned One Lesson at a Time",
-    "empty": "Reviews coming soon."
+    "empty": "Reviews coming soon.",
+    "writeReview": "Write a Review",
+    "hideForm": "Cancel",
+    "form": {
+      "title": "Share Your Experience",
+      "name": "Full Name",
+      "namePlaceholder": "Your full name",
+      "rating": "Rating",
+      "text": "Your Review",
+      "textPlaceholder": "Tell us about your lesson...",
+      "image": "Photo (optional)",
+      "imageHint": "JPG, PNG, WEBP or GIF, up to 5MB.",
+      "submit": "Submit Review",
+      "submitting": "Sending...",
+      "success": "Thank you! Your review will appear once it's approved.",
+      "error": "Something went wrong. Please try again."
+    }
   },
   "footer": {
     "tagline": "One Standard: Safety.",

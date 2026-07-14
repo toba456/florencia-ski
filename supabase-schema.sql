@@ -10,7 +10,7 @@ create table if not exists availability_slots (
   end_time time not null,
   is_booked boolean not null default false,
   created_at timestamptz default now(),
-  unique(date, start_time)
+  unique(date, start_time, end_time)
 );
 
 -- Allow public reads (clients see available slots)
@@ -64,6 +64,35 @@ create policy "Public can read approved reviews" on reviews
   for select using (approved = true);
 create policy "Admin can manage reviews" on reviews
   for all using (auth.role() = 'authenticated');
+
+-- =============================================
+-- 4. Reviews — image upload support
+-- =============================================
+alter table reviews add column if not exists image_url text;
+
+-- Allow anonymous clients to submit a review (defense in depth —
+-- the POST /api/reviews route already writes via the service role key)
+create policy "Anyone can create a review" on reviews
+  for insert with check (true);
+
+-- Public bucket for review images (public bucket => objects are served
+-- via public URL without needing a storage.objects SELECT policy)
+insert into storage.buckets (id, name, public)
+values ('reviews', 'reviews', true)
+on conflict (id) do nothing;
+
+-- Only admin can delete/replace review images (cleanup on review deletion)
+create policy "Admin can manage review images" on storage.objects
+  for all using (bucket_id = 'reviews' and auth.role() = 'authenticated');
+
+-- =============================================
+-- 5. Availability — allow overlapping time-slot presets on the same day
+-- (e.g. "Full Day" 09:00-16:00 together with "09:00-12:00", both starting
+-- at the same start_time but with different end_time)
+-- =============================================
+alter table availability_slots drop constraint if exists availability_slots_date_start_time_key;
+alter table availability_slots add constraint availability_slots_date_start_time_end_time_key
+  unique (date, start_time, end_time);
 
 -- =============================================
 -- Notes

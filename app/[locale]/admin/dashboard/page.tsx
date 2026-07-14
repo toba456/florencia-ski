@@ -5,24 +5,32 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { DayPicker } from 'react-day-picker';
-import { format, parse, isValid } from 'date-fns';
-import type { AvailabilitySlot, BookingRequest } from '@/lib/types';
+import { format } from 'date-fns';
+import type { AvailabilitySlot, BookingRequest, Review } from '@/lib/types';
 import Logo from '@/components/Logo';
+import StarRating from '@/components/reviews/StarRating';
 import 'react-day-picker/style.css';
 
 const SEASON_START = new Date(2026, 11, 1);
 const SEASON_END = new Date(2027, 1, 28);
 
+const TIME_PRESETS = [
+  { id: 'full', label: '09:00 – 16:00 (Full Day)', start: '09:00', end: '16:00' },
+  { id: 'morning', label: '09:00 – 12:00', start: '09:00', end: '12:00' },
+  { id: 'afternoon', label: '12:00 – 16:00', start: '12:00', end: '16:00' },
+  { id: 'lateAfternoon', label: '13:00 – 16:00', start: '13:00', end: '16:00' },
+] as const;
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const locale = useLocale();
 
-  const [tab, setTab] = useState<'availability' | 'bookings'>('availability');
+  const [tab, setTab] = useState<'availability' | 'bookings' | 'reviews'>('availability');
   const [slots, setSlots] = useState<AvailabilitySlot[]>([]);
   const [bookings, setBookings] = useState<BookingRequest[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedDays, setSelectedDays] = useState<Date[]>([]);
-  const [startTime, setStartTime] = useState('09:00');
-  const [endTime, setEndTime] = useState('16:00');
+  const [selectedPresetIds, setSelectedPresetIds] = useState<string[]>(['full']);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -50,41 +58,50 @@ export default function AdminDashboardPage() {
     setBookings(data ?? []);
   }, []);
 
+  const fetchReviews = useCallback(async () => {
+    const { data } = await supabase
+      .from('reviews')
+      .select('*')
+      .order('created_at', { ascending: false });
+    setReviews(data ?? []);
+  }, []);
+
   useEffect(() => {
     checkAuth().then(async () => {
-      await Promise.all([fetchSlots(), fetchBookings()]);
+      await Promise.all([fetchSlots(), fetchBookings(), fetchReviews()]);
       setLoading(false);
     });
-  }, [checkAuth, fetchSlots, fetchBookings]);
+  }, [checkAuth, fetchSlots, fetchBookings, fetchReviews]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
     router.push(`/${locale}/admin/login`);
   }
 
+  function togglePreset(id: string) {
+    setSelectedPresetIds((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+    );
+  }
+
   async function addSlots() {
-    if (selectedDays.length === 0) return;
+    if (selectedDays.length === 0 || selectedPresetIds.length === 0) return;
     setSaving(true);
     setMessage('');
 
-    const startParsed = parse(startTime, 'HH:mm', new Date());
-    const endParsed = parse(endTime, 'HH:mm', new Date());
+    const presets = TIME_PRESETS.filter((p) => selectedPresetIds.includes(p.id));
 
-    if (!isValid(startParsed) || !isValid(endParsed)) {
-      setMessage('Invalid time format.');
-      setSaving(false);
-      return;
-    }
-
-    const rows = selectedDays.map((day) => ({
-      date: format(day, 'yyyy-MM-dd'),
-      start_time: startTime + ':00',
-      end_time: endTime + ':00',
-      is_booked: false,
-    }));
+    const rows = selectedDays.flatMap((day) =>
+      presets.map((preset) => ({
+        date: format(day, 'yyyy-MM-dd'),
+        start_time: preset.start + ':00',
+        end_time: preset.end + ':00',
+        is_booked: false,
+      }))
+    );
 
     const { error } = await supabase.from('availability_slots').upsert(rows, {
-      onConflict: 'date,start_time',
+      onConflict: 'date,start_time,end_time',
       ignoreDuplicates: false,
     });
 
@@ -115,6 +132,24 @@ export default function AdminDashboardPage() {
       }
     }
     await fetchBookings();
+  }
+
+  async function approveReview(id: string) {
+    await supabase.from('reviews').update({ approved: true }).eq('id', id);
+    await fetchReviews();
+  }
+
+  async function deleteReview(id: string, imageUrl: string | null) {
+    if (imageUrl) {
+      const marker = '/object/public/reviews/';
+      const markerIndex = imageUrl.indexOf(marker);
+      if (markerIndex !== -1) {
+        const path = imageUrl.slice(markerIndex + marker.length);
+        await supabase.storage.from('reviews').remove([path]);
+      }
+    }
+    await supabase.from('reviews').delete().eq('id', id);
+    await fetchReviews();
   }
 
   const availableDates = new Set(slots.map((s) => s.date));
@@ -166,7 +201,7 @@ export default function AdminDashboardPage() {
 
         {/* Tabs */}
         <div className="flex gap-px mb-8 bg-brand-border w-fit">
-          {(['availability', 'bookings'] as const).map((t) => (
+          {(['availability', 'bookings', 'reviews'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -175,7 +210,9 @@ export default function AdminDashboardPage() {
               }`}
               style={{ fontFamily: 'var(--font-barlow)', fontWeight: 700 }}
             >
-              {t === 'availability' ? `Availability (${slots.length})` : `Bookings (${bookings.filter(b => b.status === 'pending').length} pending)`}
+              {t === 'availability' && `Availability (${slots.length})`}
+              {t === 'bookings' && `Bookings (${bookings.filter(b => b.status === 'pending').length} pending)`}
+              {t === 'reviews' && `Reviews (${reviews.filter(r => !r.approved).length} pending)`}
             </button>
           ))}
         </div>
@@ -218,28 +255,33 @@ export default function AdminDashboardPage() {
                 }}
               />
 
-              <div className="mt-6 flex gap-4">
-                <div className="flex flex-col gap-1.5 flex-1">
-                  <label className="text-xs text-brand-subtext uppercase tracking-widest" style={{ fontFamily: 'var(--font-barlow)' }}>
-                    Start Time
-                  </label>
-                  <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="bg-brand-dark border border-brand-border px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-ice"
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5 flex-1">
-                  <label className="text-xs text-brand-subtext uppercase tracking-widest" style={{ fontFamily: 'var(--font-barlow)' }}>
-                    End Time
-                  </label>
-                  <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="bg-brand-dark border border-brand-border px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-ice"
-                  />
+              <div className="mt-6 flex flex-col gap-1.5">
+                <label className="text-xs text-brand-subtext uppercase tracking-widest" style={{ fontFamily: 'var(--font-barlow)' }}>
+                  Time Slots
+                </label>
+                <div className="flex flex-col gap-2">
+                  {TIME_PRESETS.map((preset) => {
+                    const active = selectedPresetIds.includes(preset.id);
+                    return (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => togglePreset(preset.id)}
+                        className={`flex items-center justify-between px-4 py-2.5 border text-sm transition-colors ${
+                          active
+                            ? 'border-brand-ice bg-brand-ice/10 text-white'
+                            : 'border-brand-border text-brand-subtext hover:border-white hover:text-white'
+                        }`}
+                      >
+                        <span>{preset.label}</span>
+                        {active && (
+                          <svg className="w-4 h-4 text-brand-ice" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -249,11 +291,13 @@ export default function AdminDashboardPage() {
 
               <button
                 onClick={addSlots}
-                disabled={saving || selectedDays.length === 0}
+                disabled={saving || selectedDays.length === 0 || selectedPresetIds.length === 0}
                 className="mt-4 w-full py-3 bg-brand-ice text-brand-dark text-sm tracking-widest uppercase font-bold hover:bg-white disabled:opacity-50 transition-all"
                 style={{ fontFamily: 'var(--font-barlow)', fontWeight: 700 }}
               >
-                {saving ? 'Saving…' : `Save ${selectedDays.length} Day${selectedDays.length !== 1 ? 's' : ''}`}
+                {saving
+                  ? 'Saving…'
+                  : `Save ${selectedDays.length} Day${selectedDays.length !== 1 ? 's' : ''} × ${selectedPresetIds.length} Slot${selectedPresetIds.length !== 1 ? 's' : ''}`}
               </button>
             </div>
 
@@ -362,6 +406,67 @@ export default function AdminDashboardPage() {
                           </button>
                         </div>
                       )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Reviews tab */}
+        {tab === 'reviews' && (
+          <div className="bg-brand-navy border border-brand-border">
+            {reviews.length === 0 ? (
+              <div className="p-10 text-center text-brand-subtext">No reviews yet.</div>
+            ) : (
+              <div className="divide-y divide-brand-border">
+                {reviews.map((review) => (
+                  <div key={review.id} className="p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        {review.image_url && (
+                          // eslint-disable-next-line @next/next/no-img-element -- admin thumbnail, no need for next/image optimization here
+                          <img
+                            src={review.image_url}
+                            alt={review.reviewer_name}
+                            className="w-16 h-16 object-cover border border-brand-border shrink-0"
+                          />
+                        )}
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-3">
+                            <h3 className="text-white font-semibold">{review.reviewer_name}</h3>
+                            <span
+                              className={`text-xs font-semibold uppercase tracking-wider ${
+                                review.approved ? 'text-green-400' : 'text-yellow-400'
+                              }`}
+                            >
+                              {review.approved ? 'Approved' : 'Pending'}
+                            </span>
+                          </div>
+                          <StarRating rating={review.rating} size="sm" />
+                          <p className="mt-1 text-sm text-brand-subtext italic max-w-lg">&ldquo;{review.text}&rdquo;</p>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 shrink-0">
+                        {!review.approved && (
+                          <button
+                            onClick={() => approveReview(review.id)}
+                            className="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-400 text-xs tracking-widest uppercase font-semibold hover:bg-green-500/20 transition-colors"
+                            style={{ fontFamily: 'var(--font-barlow)' }}
+                          >
+                            Approve
+                          </button>
+                        )}
+                        <button
+                          onClick={() => deleteReview(review.id, review.image_url)}
+                          className="px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-xs tracking-widest uppercase font-semibold hover:bg-red-500/20 transition-colors"
+                          style={{ fontFamily: 'var(--font-barlow)' }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

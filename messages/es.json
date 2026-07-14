@@ -3,6 +3,7 @@
     "about": "Sobre Mí",
     "method": "Mi Método",
     "services": "Servicios",
+    "reviews": "Reseñas",
     "book": "Reservar"
   },
   "hero": {
@@ -117,7 +118,23 @@
   "reviews": {
     "sectionLabel": "Reseñas de Clientes",
     "title": "Confianza Real, Ganada Clase a Clase",
-    "empty": "Reseñas próximamente."
+    "empty": "Reseñas próximamente.",
+    "writeReview": "Escribir una Reseña",
+    "hideForm": "Cancelar",
+    "form": {
+      "title": "Contanos Tu Experiencia",
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre completo",
+      "rating": "Calificación",
+      "text": "Tu Reseña",
+      "textPlaceholder": "Contanos cómo fue tu clase...",
+      "image": "Foto (opcional)",
+      "imageHint": "JPG, PNG, WEBP o GIF, hasta 5MB.",
+      "submit": "Enviar Reseña",
+      "submitting": "Enviando...",
+      "success": "¡Gracias! Tu reseña se publicará una vez aprobada.",
+      "error": "Algo salió mal. Por favor intentá de nuevo."
+    }
   },
   "footer": {
     "tagline": "Un Solo Estándar: Seguridad.",

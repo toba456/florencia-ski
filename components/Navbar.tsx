@@ -21,6 +21,7 @@ export default function Navbar() {
     { label: t('about'), href: '#about' },
     { label: t('method'), href: '#method' },
     { label: t('services'), href: '#services' },
+    { label: t('reviews'), href: '#reviews' },
   ];
 
   return (

@@ -28,6 +28,7 @@ export interface Review {
   reviewer_name: string;
   rating: number;
   text: string;
+  image_url: string | null;
   approved: boolean;
   created_at: string;
 }
